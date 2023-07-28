@@ -1,7 +1,6 @@
 package com.knf.dev.librarymanagementsystem.controller;
 
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +27,8 @@ public class BookController {
 	final CategoryService categoryService;
 	final PublisherService publisherService;
 
+	static final String REDIRECT_TO_BOOKS = "redirect:/books";
+
 	public BookController(PublisherService publisherService, CategoryService categoryService, BookService bookService,
 			AuthorService authorService) {
 		this.authorService = authorService;
@@ -49,7 +50,7 @@ public class BookController {
 
 		var totalPages = bookPage.getTotalPages();
 		if (totalPages > 0) {
-			var pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+			var pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().toList();
 			model.addAttribute("pageNumbers", pageNumbers);
 		}
 		return "list-books";
@@ -87,7 +88,7 @@ public class BookController {
 
 		bookService.createBook(book);
 		model.addAttribute("book", bookService.findAllBooks());
-		return "redirect:/books";
+		return REDIRECT_TO_BOOKS;
 	}
 
 	@GetMapping("/update/{id}")
@@ -106,7 +107,7 @@ public class BookController {
 
 		bookService.updateBook(book);
 		model.addAttribute("book", bookService.findAllBooks());
-		return "redirect:/books";
+		return REDIRECT_TO_BOOKS;
 	}
 
 	@RequestMapping("/remove-book/{id}")
@@ -114,7 +115,7 @@ public class BookController {
 		bookService.deleteBook(id);
 
 		model.addAttribute("book", bookService.findAllBooks());
-		return "redirect:/books";
+		return REDIRECT_TO_BOOKS;
 	}
 
 }
