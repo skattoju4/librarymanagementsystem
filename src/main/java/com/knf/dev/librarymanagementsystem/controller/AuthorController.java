@@ -1,5 +1,6 @@
 package com.knf.dev.librarymanagementsystem.controller;
 
+import java.net.http.HttpRequest;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -22,7 +23,7 @@ public class AuthorController {
 		this.authorService = authorService;
 	}
 
-	@GetMapping("/authors")
+	@RequestMapping(path = "/authors", method = RequestMethod.GET)
 	public String findAllAuthors(Model model, @RequestParam("page") Optional<Integer> page,
 			@RequestParam("size") Optional<Integer> size) {
 
@@ -40,19 +41,19 @@ public class AuthorController {
 		return "list-authors";
 	}
 
-	@GetMapping("/author/{id}")
+	@RequestMapping(value = "/author/{id}", method = RequestMethod.GET)
 	public String findAuthorById(@PathVariable("id") Long id, Model model) {
 
 		model.addAttribute("author", authorService.findAuthorById(id));
 		return "list-author";
 	}
 
-	@GetMapping("/addAuthor")
+	@RequestMapping(value = "/addAuthor", method = RequestMethod.GET)
 	public String showCreateForm(Author author) {
 		return "add-author";
 	}
 
-	@PostMapping("/add-author")
+	@RequestMapping(value = "/add-author",method = RequestMethod.POST)
 	public String createAuthor(Author author, BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			return "add-author";
@@ -63,14 +64,14 @@ public class AuthorController {
 		return "redirect:/authors";
 	}
 
-	@GetMapping("/updateAuthor/{id}")
+	@RequestMapping(value = "/updateAuthor/{id}",method = RequestMethod.GET)
 	public String showUpdateForm(@PathVariable("id") Long id, Model model) {
 
 		model.addAttribute("author", authorService.findAuthorById(id));
 		return "update-author";
 	}
 
-	@PostMapping("/update-author/{id}")
+	@RequestMapping(value = "/update-author/{id}",method = RequestMethod.POST)
 	public String updateAuthor(@PathVariable("id") Long id, Author author, BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			author.setId(id);
@@ -82,7 +83,7 @@ public class AuthorController {
 		return "redirect:/authors";
 	}
 
-	@GetMapping("/remove-author/{id}")
+	@RequestMapping(value = "/remove-author/{id}",method = RequestMethod.GET)
 	public String deleteAuthor(@PathVariable("id") Long id, Model model) {
 		authorService.deleteAuthor(id);
 
