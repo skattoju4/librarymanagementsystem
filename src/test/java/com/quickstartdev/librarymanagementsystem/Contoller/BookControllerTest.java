@@ -27,9 +27,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes= Application.class)
-public class BookControllerTest {
+class BookControllerTest {
     @Autowired
-    static
+    staticg
     PublisherService publisherService;
     @Autowired
     static
