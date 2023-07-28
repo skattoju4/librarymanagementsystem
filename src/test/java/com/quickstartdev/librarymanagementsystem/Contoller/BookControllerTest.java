@@ -1,9 +1,7 @@
 package com.quickstartdev.librarymanagementsystem.Contoller;
 
 import com.knf.dev.librarymanagementsystem.Application;
-import com.knf.dev.librarymanagementsystem.controller.AuthorController;
 import com.knf.dev.librarymanagementsystem.controller.BookController;
-import com.knf.dev.librarymanagementsystem.entity.Author;
 import com.knf.dev.librarymanagementsystem.entity.Book;
 import com.knf.dev.librarymanagementsystem.service.AuthorService;
 import com.knf.dev.librarymanagementsystem.service.BookService;
