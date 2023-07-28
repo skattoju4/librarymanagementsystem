@@ -1,21 +1,19 @@
 package com.knf.dev.librarymanagementsystem.service;
 
-import com.knf.dev.librarymanagementsystem.dto.PublisherDTO;
-import com.knf.dev.librarymanagementsystem.entity.Publisher;
-
 import java.util.List;
 
+import com.knf.dev.librarymanagementsystem.entity.Publisher;
+
 public interface PublisherService {
-    List<Publisher> findAllPublishers();
 
-    Publisher findPublisherById(Long id);
+	public List<Publisher> findAllPublishers();
 
-    void createPublisher(PublisherDTO publisherDTO);
+	public Publisher findPublisherById(Long id);
 
-    void updatePublisher(PublisherDTO publisherDTO);
+	public void createPublisher(Publisher publisher);
 
-    void deletePublisher(Long id);
+	public void updatePublisher(Publisher publisher);
 
-    PublisherDTO findPublisherDTOById(Long id);
+	public void deletePublisher(Long id);
+
 }
-
