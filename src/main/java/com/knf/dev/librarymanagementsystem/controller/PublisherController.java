@@ -1,81 +1,69 @@
 package com.knf.dev.librarymanagementsystem.controller;
 
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-
-import com.knf.dev.librarymanagementsystem.entity.Publisher;
+import org.springframework.web.bind.annotation.*;
+import com.knf.dev.librarymanagementsystem.dto.PublisherDTO;
 import com.knf.dev.librarymanagementsystem.service.PublisherService;
 
 @Controller
 public class PublisherController {
 
-	final PublisherService publisherService;
+    private final PublisherService publisherService;
 
-	public PublisherController(PublisherService publisherService) {
-		this.publisherService = publisherService;
+    public PublisherController(PublisherService publisherService) {
+        this.publisherService = publisherService;
+    }
 
-	}
+    @GetMapping("/publishers")
+    public String findAllPublishers(Model model) {
+        model.addAttribute("publishers", publisherService.findAllPublishers());
+        return "list-publishers";
+    }
 
-	@GetMapping("/publishers")
-	public String findAllPublishers(Model model) {
+    @GetMapping("/publisher/{id}")
+    public String findPublisherById(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("publisher", publisherService.findPublisherById(id));
+        return "list-publisher";
+    }
 
-		model.addAttribute("publishers", publisherService.findAllPublishers());
-		return "list-publishers";
-	}
+    @GetMapping("/addPublisher")
+    public String showCreateForm(PublisherDTO publisherDTO) {
+        return "add-publisher";
+    }
 
-	@GetMapping("/publisher/{id}")
-	public String findPublisherById(@PathVariable("id") Long id, Model model) {
+    @PostMapping("/add-publisher")
+    public String createPublisher(@ModelAttribute("publisherDTO") PublisherDTO publisherDTO, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "add-publisher";
+        }
+        publisherService.createPublisher(publisherDTO);
+        model.addAttribute("publishers", publisherService.findAllPublishers());
+        return "redirect:/publishers";
+    }
 
-		model.addAttribute("publisher", publisherService.findPublisherById(id));
-		return "list-publisher";
-	}
+    @GetMapping("/updatePublisher/{id}")
+    public String showUpdateForm(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("publisherDTO", publisherService.findPublisherDTOById(id));
+        return "update-publisher";
+    }
 
-	@GetMapping("/addPublisher")
-	public String showCreateForm(Publisher publisher) {
-		return "add-publisher";
-	}
+    @PostMapping("/update-publisher/{id}")
+    public String updatePublisher(@PathVariable("id") Long id, @ModelAttribute("publisherDTO") PublisherDTO publisherDTO, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            publisherDTO.setId(id);
+            return "update-publisher";
+        }
+        publisherService.updatePublisher(publisherDTO);
+        model.addAttribute("publishers", publisherService.findAllPublishers());
+        return "redirect:/publishers";
+    }
 
-	@PostMapping("/add-publisher")
-	public String createPublisher(Publisher publisher, BindingResult result, Model model) {
-		if (result.hasErrors()) {
-			return "add-publisher";
-		}
-
-		publisherService.createPublisher(publisher);
-		model.addAttribute("publisher", publisherService.findAllPublishers());
-		return "redirect:/publishers";
-	}
-
-	@GetMapping("/updatePublisher/{id}")
-	public String showUpdateForm(@PathVariable("id") Long id, Model model) {
-
-		model.addAttribute("publisher", publisherService.findPublisherById(id));
-		return "update-publisher";
-	}
-
-	@PostMapping("/update-publisher/{id}")
-	public String updatePublisher(@PathVariable("id") Long id, Publisher publisher, BindingResult result, Model model) {
-		if (result.hasErrors()) {
-			publisher.setId(id);
-			return "update-publishers";
-		}
-
-		publisherService.updatePublisher(publisher);
-		model.addAttribute("publisher", publisherService.findAllPublishers());
-		return "redirect:/publishers";
-	}
-
-	@GetMapping("/remove-publisher/{id}")
-	public String deletePublisher(@PathVariable("id") Long id, Model model) {
-		publisherService.deletePublisher(id);
-
-		model.addAttribute("publisher", publisherService.findAllPublishers());
-		return "redirect:/publishers";
-	}
-
+    @GetMapping("/remove-publisher/{id}")
+    public String deletePublisher(@PathVariable("id") Long id, Model model) {
+        publisherService.deletePublisher(id);
+        model.addAttribute("publishers", publisherService.findAllPublishers());
+        return "redirect:/publishers";
+    }
 }
