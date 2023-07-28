@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(classes= Application.class)
 class BookControllerTest {
     @Autowired
-    staticg
+    static
     PublisherService publisherService;
     @Autowired
     static
